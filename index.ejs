@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เช็คมิจ — ตรวจสอบเบอร์มิจฉาชีพออนไลน์</title>
+  <meta name="description" content="ตรวจสอบเบอร์โทรว่าเป็นมิจฉาชีพหรือไม่ ฐานข้อมูลเบอร์แก๊งคอลเซ็นเตอร์ หลอกลงทุน โรแมนซ์สแกม รวมกว่า <%= stats.total %> เบอร์">
+  <meta property="og:title" content="เช็คมิจ — ตรวจสอบเบอร์มิจฉาชีพ">
+  <meta property="og:description" content="ตรวจสอบเบอร์โทรว่าเป็นมิจฉาชีพหรือไม่ ฟรี ไม่ต้องสมัครสมาชิก">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-home">
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="/" class="logo">
+      <span class="logo-icon">⚠</span>
+      <span class="logo-text">เช็คมิจ<span class="accent">.com</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/stats" class="nav-link">สถิติ</a>
+      <a href="#report" class="nav-link btn-report">แจ้งเบอร์</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="grid-overlay"></div>
+      <div class="pulse-ring ring-1"></div>
+      <div class="pulse-ring ring-2"></div>
+      <div class="pulse-ring ring-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🛡️ ฐานข้อมูลเบอร์มิจฉาชีพ</div>
+      <h1 class="hero-title">
+        ก่อนรับสาย<br>
+        <span class="highlight">เช็คก่อน</span>
+      </h1>
+      <p class="hero-subtitle">ตรวจสอบเบอร์โทรว่าเป็นมิจฉาชีพหรือไม่ รวดเร็ว ฟรี ไม่ต้องสมัครสมาชิก</p>
+
+      <div class="search-box" id="search-box">
+        <div class="search-inner">
+          <input
+            type="tel"
+            id="phone-input"
+            class="search-input"
+            placeholder="กรอกเบอร์โทร เช่น 081-234-5678"
+            maxlength="12"
+            autocomplete="off"
+            inputmode="tel"
+          >
+          <button class="search-btn" id="search-btn">
+            <span class="btn-text">ตรวจสอบ</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+        <div id="search-result" class="search-result hidden"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-num"><%= stats.total || 0 %></span>
+          <span class="stat-label">เบอร์ในฐานข้อมูล</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num"><%= stats.reports || 0 %></span>
+          <span class="stat-label">ครั้งที่ถูกรายงาน</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">24/7</span>
+          <span class="stat-label">ตรวจสอบได้ตลอด</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCAM TYPES -->
+  <section class="scam-types">
+    <div class="container">
+      <h2 class="section-title">ประเภทมิจฉาชีพที่พบบ่อย</h2>
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-icon">📞</div>
+          <h3>แก๊งคอลเซ็นเตอร์</h3>
+          <p>อ้างเป็นตำรวจ ศุลกากร หรือธนาคาร บังคับโอนเงิน</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">📈</div>
+          <h3>หลอกลงทุน</h3>
+          <p>รับประกันกำไรสูง ลงทุนคริปโต หุ้น forex ปลอม</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">💔</div>
+          <h3>โรแมนซ์สแกม</h3>
+          <p>แก๊งหัวใจ สร้างความสัมพันธ์แล้วขอยืมเงิน</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">📦</div>
+          <h3>พัสดุ/ภาษีปลอม</h3>
+          <p>แจ้งว่ามีพัสดุค้างชำระ ให้โอนเงินค่าภาษีก่อน</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">💳</div>
+          <h3>สินเชื่อหลอกลวง</h3>
+          <p>เสนอสินเชื่อด่วน แต่ต้องจ่ายค่าธรรมเนียมก่อน</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">🎁</div>
+          <h3>ถูกรางวัลปลอม</h3>
+          <p>แจ้งว่าถูกรางวัล ให้จ่ายภาษีหรือค่าธรรมเนียมก่อนรับ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT REPORTS -->
+  <section class="recent-reports">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">เบอร์ที่ถูกรายงานล่าสุด</h2>
+        <a href="/stats" class="see-all">ดูทั้งหมด →</a>
+      </div>
+      <div class="reports-table">
+        <div class="table-header">
+          <span>เบอร์โทร</span>
+          <span>ประเภท</span>
+          <span>ถูกรายงาน</span>
+        </div>
+        <% recent.forEach(function(p) { %>
+        <a href="/<%= p.phone %>" class="table-row">
+          <span class="phone-num"><%= formatPhone(p.phone) %></span>
+          <span class="scam-badge scam-<%= p.scam_type %>"><%= scamTypeLabels[p.scam_type] || p.scam_type %></span>
+          <span class="report-count"><%= p.report_count %> ครั้ง</span>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORT FORM -->
+  <section class="report-section" id="report">
+    <div class="container">
+      <div class="report-card">
+        <div class="report-header">
+          <h2>📢 แจ้งเบอร์มิจฉาชีพ</h2>
+          <p>ช่วยกันแจ้งเพื่อปกป้องคนไทย</p>
+        </div>
+        <form id="report-form" class="report-form">
+          <div class="form-group">
+            <label>เบอร์โทรมิจฉาชีพ *</label>
+            <input type="tel" name="phone" id="report-phone" placeholder="0XX-XXX-XXXX" required maxlength="12">
+          </div>
+          <div class="form-group">
+            <label>ประเภทการหลอกลวง *</label>
+            <select name="scam_type" required>
+              <option value="">-- เลือกประเภท --</option>
+              <option value="call_center">แก๊งคอลเซ็นเตอร์</option>
+              <option value="investment">หลอกลงทุน</option>
+              <option value="romance">โรแมนซ์สแกม</option>
+              <option value="parcel">พัสดุ/ภาษีปลอม</option>
+              <option value="loan">สินเชื่อหลอกลวง</option>
+              <option value="impersonation">แอบอ้างเป็นเจ้าหน้าที่</option>
+              <option value="prize">ถูกรางวัลปลอม</option>
+              <option value="other">อื่นๆ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>รายละเอียดเพิ่มเติม</label>
+            <textarea name="description" placeholder="บอกเล่าประสบการณ์ หรือวิธีการหลอกลวง..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">
+            <span>📢 แจ้งเบอร์นี้</span>
+          </button>
+          <div id="report-msg" class="report-msg hidden"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>© 2025 เช็คมิจ.com — ช่วยกันแจ้งเบอร์มิจฉาชีพ เพื่อสังคมไทยที่ปลอดภัย</p>
+    <p class="footer-sub">ข้อมูลทั้งหมดมาจากผู้ใช้งาน ไม่ใช่การยืนยันทางกฎหมาย</p>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

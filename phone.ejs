@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <% if (isScam) { %>
+  <title><%= formatted %> เบอร์มิจฉาชีพ — ถูกรายงาน <%= phone.report_count %> ครั้ง | เช็คมิจ</title>
+  <meta name="description" content="เบอร์ <%= formatted %> ถูกรายงานว่าเป็นมิจฉาชีพประเภท <%= scamTypeLabels[phone.scam_type] %> รวม <%= phone.report_count %> ครั้ง ระวัง! อย่ารับสาย">
+  <meta property="og:title" content="⚠️ <%= formatted %> — เบอร์มิจฉาชีพ">
+  <meta property="og:description" content="ถูกรายงาน <%= phone.report_count %> ครั้ง ประเภท: <%= scamTypeLabels[phone.scam_type] %>">
+  <% } else { %>
+  <title><%= formatted %> ตรวจสอบเบอร์โทร | เช็คมิจ</title>
+  <meta name="description" content="ตรวจสอบเบอร์ <%= formatted %> ยังไม่พบในฐานข้อมูลมิจฉาชีพ แต่โปรดระวัง หากได้รับประสบการณ์ที่ไม่ดีสามารถรายงานได้ที่นี่">
+  <% } %>
+  <link rel="canonical" href="/<%= phoneNumber %>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Structured Data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "ตรวจสอบเบอร์ <%= formatted %>",
+    "description": "<% if(isScam){ %>เบอร์ <%= formatted %> ถูกรายงานว่าเป็นมิจฉาชีพ <%= phone.report_count %> ครั้ง<% } else { %>เบอร์ <%= formatted %> ยังไม่พบในฐานข้อมูลมิจฉาชีพ<% } %>",
+    "url": "/<%= phoneNumber %>"
+  }
+  </script>
+</head>
+<body class="page-phone">
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="/" class="logo">
+      <span class="logo-icon">⚠</span>
+      <span class="logo-text">เช็คมิจ<span class="accent">.com</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">← ค้นหาเบอร์อื่น</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="phone-page">
+    <div class="container">
+      <!-- VERDICT CARD -->
+      <div class="verdict-card <%= isScam ? 'verdict-danger' : 'verdict-safe' %>">
+        <div class="verdict-bg"></div>
+        <div class="verdict-content">
+          <div class="verdict-icon"><%= isScam ? '🚨' : '✅' %></div>
+          <div class="phone-display">
+            <span class="phone-big"><%= formatted %></span>
+          </div>
+          <% if (isScam) { %>
+          <div class="verdict-badge danger">⚠️ พบในฐานข้อมูลมิจฉาชีพ</div>
+          <div class="verdict-stats">
+            <div class="v-stat">
+              <span class="v-num"><%= phone.report_count %></span>
+              <span class="v-label">ครั้งที่ถูกรายงาน</span>
+            </div>
+            <div class="v-divider"></div>
+            <div class="v-stat">
+              <span class="v-num scam-type-label"><%= scamTypeLabels[phone.scam_type] %></span>
+              <span class="v-label">ประเภทการหลอกลวง</span>
+            </div>
+          </div>
+          <% if (phone.description) { %>
+          <div class="phone-desc">
+            <p>"<%= phone.description %>"</p>
+          </div>
+          <% } %>
+          <div class="verdict-warning">
+            <strong>คำแนะนำ:</strong> ไม่ควรรับสาย ไม่โอนเงิน ไม่กดลิงก์ที่แนบมา หากถูกโกงแล้วแจ้ง <a href="https://www.police.go.th" target="_blank" rel="nofollow">ตำรวจไซเบอร์</a> ได้ทันที
+          </div>
+          <% } else { %>
+          <div class="verdict-badge safe">✅ ยังไม่พบในฐานข้อมูล</div>
+          <p class="verdict-info">เบอร์นี้ยังไม่ถูกรายงานในระบบ แต่โปรดระวัง หากมีพฤติกรรมน่าสงสัยสามารถรายงานได้เลย</p>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- SHARE BUTTONS -->
+      <div class="share-row">
+        <span class="share-label">แชร์ให้เพื่อน:</span>
+        <a href="https://line.me/R/msg/text/?%E2%9A%A0%EF%B8%8F+เบอร์+<%= formatted %>+<% if(isScam){ %>ถูกรายงานว่าเป็นมิจฉาชีพ+<%= phone ? phone.report_count : 0 %>+ครั้ง<% } else { %>ยังไม่พบในฐานข้อมูลมิจฉาชีพ<% } %>+ตรวจสอบที่+https%3A%2F%2Fecheckmij.com%2F<%= phoneNumber %>" target="_blank" class="share-btn line">LINE</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://checkmij.com/<%= phoneNumber %>" target="_blank" class="share-btn fb">Facebook</a>
+        <button onclick="copyLink('<%= phoneNumber %>')" class="share-btn copy">📋 คัดลอกลิงก์</button>
+      </div>
+
+      <!-- RECENT REPORTS -->
+      <% if (recentReports.length > 0) { %>
+      <div class="reports-section">
+        <h2>รายงานจากผู้ใช้</h2>
+        <div class="reports-list">
+          <% recentReports.forEach(function(r) { %>
+          <div class="report-item">
+            <div class="report-meta">
+              <span class="report-type scam-badge scam-<%= r.scam_type %>"><%= scamTypeLabels[r.scam_type] || r.scam_type %></span>
+              <span class="report-date"><%= new Date(r.created_at).toLocaleDateString('th-TH') %></span>
+            </div>
+            <% if (r.description) { %>
+            <p class="report-desc"><%= r.description %></p>
+            <% } %>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+      <% } %>
+
+      <!-- REPORT FORM -->
+      <div class="report-card" id="report">
+        <div class="report-header">
+          <h2>📢 รายงานเบอร์นี้</h2>
+          <p>เคยโดนโทรมาจากเบอร์นี้? ช่วยแจ้งเพื่อปกป้องคนอื่น</p>
+        </div>
+        <form id="report-form" class="report-form">
+          <input type="hidden" name="phone" value="<%= phoneNumber %>">
+          <div class="form-group">
+            <label>ประเภทการหลอกลวง *</label>
+            <select name="scam_type" required>
+              <option value="">-- เลือกประเภท --</option>
+              <option value="call_center">แก๊งคอลเซ็นเตอร์</option>
+              <option value="investment">หลอกลงทุน</option>
+              <option value="romance">โรแมนซ์สแกม</option>
+              <option value="parcel">พัสดุ/ภาษีปลอม</option>
+              <option value="loan">สินเชื่อหลอกลวง</option>
+              <option value="impersonation">แอบอ้างเป็นเจ้าหน้าที่</option>
+              <option value="prize">ถูกรางวัลปลอม</option>
+              <option value="other">อื่นๆ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>รายละเอียดเพิ่มเติม</label>
+            <textarea name="description" placeholder="เล่าให้ฟังว่าเกิดอะไรขึ้น..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">
+            <span>📢 รายงานเบอร์นี้</span>
+          </button>
+          <div id="report-msg" class="report-msg hidden"></div>
+        </form>
+      </div>
+
+      <!-- BACK SEARCH -->
+      <div class="back-search">
+        <h3>ตรวจสอบเบอร์อื่น</h3>
+        <div class="search-box mini">
+          <div class="search-inner">
+            <input type="tel" id="phone-input" class="search-input" placeholder="กรอกเบอร์โทร..." maxlength="12" inputmode="tel">
+            <button class="search-btn" id="search-btn">ตรวจสอบ →</button>
+          </div>
+          <div id="search-result" class="search-result hidden"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>© 2025 เช็คมิจ.com — ช่วยกันแจ้งเบอร์มิจฉาชีพ เพื่อสังคมไทยที่ปลอดภัย</p>
+    <p class="footer-sub">ข้อมูลทั้งหมดมาจากผู้ใช้งาน ไม่ใช่การยืนยันทางกฎหมาย</p>
+  </div>
+</footer>
+
+<script>
+function copyLink(phone) {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    alert('คัดลอกลิงก์แล้ว!');
+  });
+}
+</script>
+<script src="/js/app.js"></script>
+</body>
+</html>
